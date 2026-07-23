@@ -19,6 +19,56 @@ const employees = [
     { id: 10000004, name: "Diane Jones", ext: 2123, email: "djones@xmail.com", dept: "Quality Assurance" },
     { id: 10000005, name: "Sue Liang ", ext: 2124, email: "sliang@xmail.com", dept: "Marketing"}
 ];
+let list
+let storage
+let storageArry = []
+function checkStorage() {
+    if (storageArry.length === 0) {
+        // GET TASKS FROM STORAGE OR EMPTY STRING IF STORAGE IS ALSO EMPTY
+        storage = localStorage.getItem('storageArry') || ''
+        // IF NOT EMPTY, CONVERT STRING TO ARRAY AND STORE IN TASKS VARIABLE
+        if (storage.length > 0) {
+            // storageArry = storage.split('|') // WITHOUT JSON.PARSE
+            storageArry = JSON.parse(localStorage.getItem('storageArry'))
+        }
+    }
+    // IF THERE ARE ITEMS IN THE Storage Array
+    // SORT AND CREATE TASKS STRING
+    // THEN DISPLAY STRING WITHIN TEXTAREA
+    //if (storageArry.length > 0) {
+     //   list = storageArry.join('\n') // APPEND LINE BREAK
+
+        // DISPLAY TASKS STRING
+     //   $('tableBody').value = list
+    //}
+}
+//Function to save to local storage
+function saveEmployees() {
+   localStorage.setItem('employees', JSON.stringify(employees))
+}
+
+// Function to load employees from local storage
+function loadEmployees() {
+    // CHECK TO SEE IF STORAGE OBJECT EXISTS WHEN THE PAGE LOADS
+    // Check if the object exists in storage before attempting extraction
+   if (localStorage.getItem('employees') !== null) {
+       employees = JSON.parse(localStorage.getItem('employees'));
+    }
+    buildGrid(); // Build grid when page loads/data is extracted
+ }
+// BUILD THE EMPLOYEES GRID
+function buildGrid() {
+    // Grid rendering logic goes here
+    saveEmployees(); // Stored when the grid is built
+}
+
+function keepThead() {
+//const tableBody = document.getElementById("empTable");
+// Loop backwards and delete every row except the first one (index 0)
+for (let i = tableBody.rows.length - 1; i > 0; i--) {
+    tableBody.deleteRow(i);
+}
+}
 
 function delEmployee (index) {
     empTable.addEventListener('click', (e) => {
@@ -28,7 +78,7 @@ function delEmployee (index) {
 }//func delEmployee
 
 function displayEmployees() {
-tableBody.innerHTML = ""
+keepThead()
 const rowHtml = employees.map((emp, index) => `
     <tr>
         <td>${emp.id}</td>
@@ -74,7 +124,8 @@ function addNewEmployee () {
     employees.push(...newEmployee)
 
     //reset table body
-    tableBody.innerHTML = ""
+    //tableBody.innerHTML = ""
+    keepThead()
     // display on page load
     displayEmployees()
 
@@ -91,12 +142,3 @@ firstTxtBx.focus();
 
 displayEmployees()
 addNewEmployee()
-
-
- 
-
-
-
-    // STORE THE ARRAY IN STORAGE
-
-};

@@ -1,58 +1,101 @@
+// GET ADD EMPLOYEE FORM AND EMPLOYEE TABLE FROM THE DOM
+const form = document.getElementById('addForm')
+const table = document.getElementById('employees')
+const tableBody = document.getElementById("empTable")
+
+// To begin, set FOCUS to the first text box
+const firstTxtBx = document.querySelector('input[type="text"]');
+if (firstTxtBx) {
+  firstTxtBx.focus();
+  // Force cursor to the very BEGINNING of the text
+  firstTxtBx.setSelectionRange(0, 0);  
+}
+
 // CREATE AN ARRAY OF EMPLOYEES
+const employees = [
+    { id: 10000001, name: "Joe Smith", ext: 2120, email: "jsmith@xmail.com", dept: "Sales"},
+    { id: 10000002, name: "Tammy Cyr", ext: 2121, email: "tcyr@xmail.com", dept: "Administrative"},
+    { id: 10000003, name: "Wayne Thomson", ext: 2122, email: "wthomson@xmail.com", dept: "Engineering"},
+    { id: 10000004, name: "Diane Jones", ext: 2123, email: "djones@xmail.com", dept: "Quality Assurance" },
+    { id: 10000005, name: "Sue Liang ", ext: 2124, email: "sliang@xmail.com", dept: "Marketing"}
+];
 
+function delEmployee (index) {
+    empTable.addEventListener('click', (e) => {
+    employees.splice(index, 1); // Removes 1 item at the specified index
+    displayEmployees(); 
+ });
+}//func delEmployee
 
-// CHECK TO SEE IF STORAGE OBJECT EXISTS WHEN THE PAGE LOADS
-// IF DOES, RETURN STORAGE OBJECT INTO ARRAY INSTEAD OF POPULATED ARRAY
+function displayEmployees() {
+tableBody.innerHTML = ""
+const rowHtml = employees.map((emp, index) => `
+    <tr>
+        <td>${emp.id}</td>
+        <td>${emp.name}</td>
+        <td>${emp.ext}</td>
+        <td>${emp.email}</td>
+        <td>${emp.dept}</td>
+        <td>
+          <button onclick="delEmployee(${index})">X</button>
+        </td>
+    </tr>
+`).join('\n')
 
+// Append the row to the table body
+tableBody.innerHTML += rowHtml
+} //function displayEmployees
 
-// GET DOM ELEMENTS
-
-
-// BUILD THE EMPLOYEES TABLE WHEN THE PAGE LOADS
-
-
-// ADD EMPLOYEE
-form.addEventListener('submit', (e) => {
+function addNewEmployee () {
+// ADD EMPLOYEE function
+//listen for form submission
+    form.addEventListener('submit', (e) => {
     // PREVENT FORM SUBMISSION
-
+    e.preventDefault()
+   
     // GET THE VALUES FROM THE TEXT BOXES
+    const empName = document.getElementById('name').value
+    const empId = document.getElementById('id').value
+    const empDept = document.getElementById('department').value
+    const empExt = document.getElementById('extension').value
+    const empEmail = document.getElementById('email').value
 
     // ADD THE NEW EMPLOYEE TO A NEW ARRAY OBJECT
+    // Create a new row (<tr>)
+    const newRow = document.createElement('tr');
+
+    // Create a new array from the input data
+    const newEmployee = [
+        { id: empId, name: empName, ext: empExt, email: empEmail, dept: empDept}
+    ];
 
     // PUSH THE NEW ARRAY TO THE *EXISTING* EMPLOYEES ARRAY
+    // Push items into the existing array
+    employees.push(...newEmployee)
 
-    // BUILD THE GRID
+    //reset table body
+    tableBody.innerHTML = ""
+    // display on page load
+    displayEmployees()
 
-    // RESET THE FORM
+// RESET THE FORM
+form.reset()
 
-    // SET FOCUS BACK TO THE ID TEXT BOX
+// SET FOCUS BACK TO THE ID TEXT BOX
+firstTxtBx.focus();
+    }); //form.addEventListener
+}  //func addNewEmployee
 
-});
 
-// DELETE EMPLOYEE
-empTable.addEventListener('click', (e) => {
-    // CONFIRM THE DELETE
+//MAIN
 
-        // GET THE SELECTED ROWINDEX FOR THE TR (PARENTNODE.PARENTNODE)
+displayEmployees()
+addNewEmployee()
 
-        // REMOVE EMPLOYEE FROM ARRAY
 
-        // BUILD THE GRID
+ 
 
-});
 
-// BUILD THE EMPLOYEES GRID
-function buildGrid() {
-    // REMOVE THE EXISTING SET OF ROWS BY REMOVING THE ENTIRE TBODY SECTION
-
-    // REBUILD THE TBODY FROM SCRATCH
-
-    // LOOP THROUGH THE ARRAY OF EMPLOYEES
-    // REBUILDING THE ROW STRUCTURE
-
-    // BIND THE TBODY TO THE EMPLOYEE TABLE
-
-    // UPDATE EMPLOYEE COUNT
 
     // STORE THE ARRAY IN STORAGE
 
